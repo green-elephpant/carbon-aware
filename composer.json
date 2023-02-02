@@ -1,0 +1,26 @@
+{
+  "name": "greenelephpant/carbonaware",
+  "description": "SDK to help your applications reduce carbon emissions",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Carsten Windler",
+      "email": "carsten@carstenwindler.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GreenElePHPant\\CarbonAware\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "psr/http-message": "^1.0",
+    "php-http/message-factory": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr/simple-cache": "^1.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  }
+}
