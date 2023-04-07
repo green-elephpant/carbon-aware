@@ -6,6 +6,9 @@ use GreenElePHPant\CarbonAware\Location\Location;
 
 interface CarbonAwareForecastInterface
 {
-    public function getBestTimeForLocation(Location $location);
-    public function getBestTime();
+    public function isBelowForecastAverage();
+    public function isAboveForecastAverage();
+
+    // public function getBestTimeForLocation(Location $location);
+    // public function getBestTime();
 }
