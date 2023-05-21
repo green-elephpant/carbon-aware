@@ -1,6 +1,6 @@
 <?php
 
-namespace GreenElePHPant\CarbonAware\Location;
+namespace GreenElephpant\CarbonAware\Location;
 
 interface LocationInterface
 {

@@ -1,13 +1,16 @@
 <?php
 
-namespace GreenElePHPant\CarbonAware;
+namespace GreenElephpant\CarbonAware;
 
-use GreenElePHPant\CarbonAware\Location\Location;
+use GreenElephpant\CarbonAware\CarbonForecast\CarbonForecast;
+use GreenElephpant\CarbonAware\Location\Location;
 
 interface CarbonAwareForecastInterface
 {
-    public function isBelowForecastAverage();
-    public function isAboveForecastAverage();
+    public function getForecast(Location $location = null): CarbonForecast;
+
+    // public function isBelowForecastAverage();
+    // public function isAboveForecastAverage();
 
     // public function getBestTimeForLocation(Location $location);
     // public function getBestTime();

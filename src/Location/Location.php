@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
-namespace GreenElePHPant\CarbonAware\Location;
+namespace GreenElephpant\CarbonAware\Location;
 
 class Location implements LocationInterface
 {
-    public function __construct(
-        private readonly string $countryCode,
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $countryCode;
+
+    public function __construct(string $countryCode)
+    {
+        $this->countryCode = $countryCode;
     }
 
     public function getCountryCode(): string

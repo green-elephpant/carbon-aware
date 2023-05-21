@@ -1,8 +1,8 @@
 <?php
 
-namespace GreenElePHPant\CarbonAware;
+namespace GreenElephpant\CarbonAware;
 
-use GreenElePHPant\CarbonAware\Location\Location;
+use GreenElephpant\CarbonAware\Location\Location;
 
 interface CarbonAwareHistoricalInterface
 {

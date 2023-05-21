@@ -1,19 +1,38 @@
 <?php
 
-namespace GreenElePHPant\CarbonAware\Connector;
+namespace GreenElephpant\CarbonAware\Connector;
 
-use GreenElePHPant\CarbonAware\CarbonIntensity\CarbonIntensity;
-use GreenElePHPant\CarbonAware\Location\Location;
+use GreenElephpant\CarbonAware\CarbonForecast\CarbonForecast;
+use GreenElephpant\CarbonAware\CarbonIntensity\CarbonIntensity;
+use GreenElephpant\CarbonAware\Location\Location;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestFactoryInterface;
 
 class Co2Signal implements ConnectorInterface
 {
-    public function __construct(
-        private readonly string $apiKey,
-        private readonly HttpClient $httpClient,
-        private readonly RequestFactoryInterface $requestFactory
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $apiKey;
+
+    /**
+     * @readonly
+     * @var \Http\Client\HttpClient
+     */
+    private $httpClient;
+
+    /**
+     * @readonly
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    private $requestFactory;
+
+    public function __construct(string $apiKey, HttpClient $httpClient, RequestFactoryInterface $requestFactory)
+    {
+        $this->apiKey = $apiKey;
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
     }
 
     public function getCurrent(Location $region): CarbonIntensity
@@ -24,7 +43,7 @@ class Co2Signal implements ConnectorInterface
         $request = $request->withHeader('auth-token', $this->apiKey);
         $response = $this->httpClient->sendRequest($request);
 
-        $result = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        $result = json_decode($response->getBody()->getContents(), false, 512, 0);
 
         if (!is_object($result)) {
             throw new \Exception();
@@ -50,7 +69,7 @@ class Co2Signal implements ConnectorInterface
         );
     }
 
-    public function getForecast(Location $region): CarbonIntensity
+    public function getForecast(Location $region): CarbonForecast
     {
         throw new \RuntimeException('CO2Signal does not support forecast');
     }

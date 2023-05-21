@@ -2,25 +2,42 @@
 
 declare(strict_types=1);
 
-namespace GreenElePHPant\CarbonAware\CarbonIntensity;
+namespace GreenElephpant\CarbonAware;
 
-use GreenElePHPant\CarbonAware\CarbonAwareCurrentInterface;
-use GreenElePHPant\CarbonAware\CarbonAwareHistoricalInterface;
-use GreenElePHPant\CarbonAware\Connector\ConnectorInterface;
-use GreenElePHPant\CarbonAware\Location\Location;
+use GreenElephpant\CarbonAware\CarbonForecast\CarbonForecast;
+use GreenElephpant\CarbonAware\CarbonIntensity\CarbonIntensity;
+use GreenElephpant\CarbonAware\Connector\ConnectorInterface;
+use GreenElephpant\CarbonAware\Location\Location;
 use Psr\SimpleCache\CacheInterface;
+use TestApp\CarbonIntensityHistory\CarbonIntensityHistory;
 
-class CarbonIntensityService implements CarbonAwareCurrentInterface, CarbonAwareHistoricalInterface
+class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareForecastInterface
 {
     public const THRESHOLD_LOW = 350;
-    public const THRESHOLD_HIGH = 350;
+    public const THRESHOLD_HIGH = 600;
+    /**
+     * @var \GreenElephpant\CarbonAware\Connector\ConnectorInterface
+     */
+    private $connector;
+    /**
+     * @var \GreenElephpant\CarbonAware\Location\Location
+     */
+    private $defaultLocation;
+    /**
+     * @var \TestApp\CarbonIntensityHistory\CarbonIntensityHistory|null
+     */
+    private $emissionsHistory;
+    /**
+     * @var \Psr\SimpleCache\CacheInterface|null
+     */
+    private $cache;
 
-    public function __construct(
-        private ConnectorInterface      $connector,
-        private Location                $defaultLocation,
-        private ?CarbonIntensityHistory $emissionsHistory = null,
-        private ?CacheInterface         $cache = null
-    ) {
+    public function __construct(ConnectorInterface      $connector, Location                $defaultLocation, ?CarbonIntensityHistory $emissionsHistory = null, ?CacheInterface         $cache = null)
+    {
+        $this->connector = $connector;
+        $this->defaultLocation = $defaultLocation;
+        $this->emissionsHistory = $emissionsHistory;
+        $this->cache = $cache;
     }
 
     public function isLow(Location $location = null): bool
@@ -51,12 +68,15 @@ class CarbonIntensityService implements CarbonAwareCurrentInterface, CarbonAware
         return $this->connector->getCurrent($location ?? $this->defaultLocation);
     }
 
-    private function getForecastFromConnector(Location $location = null): CarbonIntensity
+    private function getForecastFromConnector(Location $location = null): CarbonForecast
     {
         return $this->connector->getForecast($location ?? $this->defaultLocation);
     }
 
-    private function getFromCache(string $cacheKey): mixed
+    /**
+     * @return mixed
+     */
+    private function getFromCache(string $cacheKey)
     {
         if (!isset($this->cache)) {
             return null;
@@ -65,7 +85,10 @@ class CarbonIntensityService implements CarbonAwareCurrentInterface, CarbonAware
         return $this->cache->get($cacheKey);
     }
 
-    private function setToCache(string $cacheKey, mixed $value): void
+    /**
+     * @param mixed $value
+     */
+    private function setToCache(string $cacheKey, $value): void
     {
         if (!isset($this->cache)) {
             return;
@@ -103,30 +126,29 @@ class CarbonIntensityService implements CarbonAwareCurrentInterface, CarbonAware
         return $emissions;
     }
 
-    public function getForecast(Location $location = null): CarbonIntensity
+    public function getForecast(Location $location = null): CarbonForecast
     {
         $cacheKey = 'emissions_forecast_' . ($location ?? $this->defaultLocation)->getCountryCode();
 
-        /** @var CarbonIntensity|null $cachedEmissions */
+        /** @var CarbonForecast|null $cachedEmissions */
         $cachedEmissions = $this->getFromCache($cacheKey);
 
         if ($cachedEmissions !== null) {
             return $cachedEmissions;
         }
 
-        $emissions = $this->getForecastFromConnector($location);
+        $forecast = $this->getForecastFromConnector($location);
 
-        // $this->store($emissions);
+        $this->setToCache($cacheKey, $forecast);
 
-        $this->setToCache($cacheKey, $emissions);
-
-        return $emissions;
+        return $forecast;
     }
 
     public function getAverage(Location $location, int $timespanHours): int
     {
         if (!isset($this->emissionsHistory)) {
-            throw new EmissionsHistoryNotConfiguredException();
+            // TODO Rename Emissionshistory
+            throw new \RuntimeException('EmissionsHistory not configured');
         }
 
         return $this->emissionsHistory->getAveragOverHours($location, $timespanHours);

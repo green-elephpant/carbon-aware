@@ -2,17 +2,29 @@
 
 declare(strict_types=1);
 
-namespace GreenElePHPant\CarbonAware\CarbonIntensity;
+namespace GreenElephpant\CarbonAware\CarbonIntensity;
 
-use GreenElePHPant\CarbonAware\Location\Location;
+use GreenElephpant\CarbonAware\Location\Location;
 
 class CarbonIntensity
 {
-    public function __construct(
-        public int $co2e,
-        public Location $location,
-        public string $datetime
-    ) {
+    /**
+     * @var int
+     */
+    public $co2e;
+    /**
+     * @var \GreenElephpant\CarbonAware\Location\Location
+     */
+    public $location;
+    /**
+     * @var string
+     */
+    public $datetime;
+    public function __construct(int $co2e, Location $location, string $datetime)
+    {
+        $this->co2e = $co2e;
+        $this->location = $location;
+        $this->datetime = $datetime;
     }
 
     /**
