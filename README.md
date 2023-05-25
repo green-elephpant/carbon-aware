@@ -1,6 +1,6 @@
-<p align="center">
+<!-- p align="center">
 	<img src="https://media.carstenwindler.de/green-elephpant/green-elephpant-logo.svg" alt="Green ElePHPant" width="400">
-</p>
+</p--->
 
 <h1 align="center">Green ElePHPant - CarbonAware</h1>
 
