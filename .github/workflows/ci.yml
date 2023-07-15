@@ -42,7 +42,7 @@ jobs:
       # Stage 2 - Code Analysis #
       ###########################
       - name: Code Style Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run
+        run: vendor/bin/php-cs-fixer fix src --dry-run
 
       - name: Static Code Analysis
         run: vendor/bin/phpstan
