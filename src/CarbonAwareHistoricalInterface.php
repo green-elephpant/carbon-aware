@@ -6,5 +6,8 @@ use GreenElephpant\CarbonAware\Location\Location;
 
 interface CarbonAwareHistoricalInterface
 {
-    public function getAverage(Location $location, int $timespanHours);
+    /**
+     * @return array<int>
+     */
+    public function getAverage(Location $location, int $timespanHours): array;
 }

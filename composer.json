@@ -10,7 +10,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "GreenElephpant\\CarbonAware\\": "src/"
+      "GreenElephpant\\CarbonAware\\": "src/",
+      "GreenElephpant\\CarbonAware\\Test\\": "tests/"
     }
   },
   "require": {
@@ -19,12 +20,14 @@
     "php-http/message-factory": "^1.0",
     "psr/http-factory": "^1.0",
     "psr/simple-cache": "^1.0",
-    "php-http/httplug": "^2.3"
+    "php-http/httplug": "^2.3",
+    "ext-json": "*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
     "phpstan/phpstan": "^1.9",
     "friendsofphp/php-cs-fixer": "^3.14",
-    "rector/rector": "^0.15.17"
+    "rector/rector": "^0.15.17",
+    "phpunit/phpunit": "^9.6"
   }
 }

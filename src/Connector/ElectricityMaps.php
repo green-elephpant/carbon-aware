@@ -34,8 +34,12 @@ class ElectricityMaps implements ConnectorInterface
      */
     private $requestFactory;
 
-    public function __construct(string $apiKey, string $urlCode, HttpClient $httpClient, RequestFactoryInterface $requestFactory)
-    {
+    public function __construct(
+        string $apiKey,
+        string $urlCode,
+        HttpClient $httpClient,
+        RequestFactoryInterface $requestFactory
+    ) {
         $this->apiKey = $apiKey;
         $this->urlCode = $urlCode;
         $this->httpClient = $httpClient;

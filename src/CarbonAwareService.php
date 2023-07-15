@@ -9,34 +9,34 @@ use GreenElephpant\CarbonAware\CarbonIntensity\CarbonIntensity;
 use GreenElephpant\CarbonAware\Connector\ConnectorInterface;
 use GreenElephpant\CarbonAware\Location\Location;
 use Psr\SimpleCache\CacheInterface;
-use TestApp\CarbonIntensityHistory\CarbonIntensityHistory;
 
 class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareForecastInterface
 {
     public const THRESHOLD_LOW = 350;
     public const THRESHOLD_HIGH = 600;
+
     /**
      * @var \GreenElephpant\CarbonAware\Connector\ConnectorInterface
      */
     private $connector;
+
     /**
      * @var \GreenElephpant\CarbonAware\Location\Location
      */
     private $defaultLocation;
-    /**
-     * @var \TestApp\CarbonIntensityHistory\CarbonIntensityHistory|null
-     */
-    private $emissionsHistory;
+
     /**
      * @var \Psr\SimpleCache\CacheInterface|null
      */
     private $cache;
 
-    public function __construct(ConnectorInterface      $connector, Location                $defaultLocation, ?CarbonIntensityHistory $emissionsHistory = null, ?CacheInterface         $cache = null)
-    {
+    public function __construct(
+        ConnectorInterface $connector,
+        Location $defaultLocation,
+        ?CacheInterface $cache = null
+    ) {
         $this->connector = $connector;
         $this->defaultLocation = $defaultLocation;
-        $this->emissionsHistory = $emissionsHistory;
         $this->cache = $cache;
     }
 
@@ -97,15 +97,6 @@ class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareFore
         $this->cache->set($cacheKey, $value, 1800);
     }
 
-    private function storeEmissions(CarbonIntensity $emissions): void
-    {
-        if (!isset($this->emissionsHistory)) {
-            return;
-        }
-
-        $this->emissionsHistory->store($emissions);
-    }
-
     public function getCurrent(Location $location = null): CarbonIntensity
     {
         $cacheKey = 'emissions_current_' . ($location ?? $this->defaultLocation)->getCountryCode();
@@ -118,8 +109,6 @@ class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareFore
         }
 
         $emissions = $this->getCurrentFromConnector($location);
-
-        $this->storeEmissions($emissions);
 
         $this->setToCache($cacheKey, $emissions);
 
@@ -154,6 +143,9 @@ class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareFore
         return $this->emissionsHistory->getAveragOverHours($location, $timespanHours);
     }
 
+    /**
+     * @param array<Location> $locations
+     */
     public function getBestByLocations(array $locations): void
     {
     }

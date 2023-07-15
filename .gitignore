@@ -2,3 +2,4 @@ database
 .php-cs-fixer.cache
 composer.lock
 vendor
+/.phpunit.result.cache

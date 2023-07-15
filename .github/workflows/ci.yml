@@ -1,0 +1,54 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      ###################
+      # Stage 1 - Build #
+      ###################
+      - name: Checkout latest revision
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.2'
+          coverage: pcov
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install
+
+      ###########################
+      # Stage 2 - Code Analysis #
+      ###########################
+      - name: Code Style Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run
+
+      - name: Static Code Analysis
+        run: vendor/bin/phpstan
+
+      ###################
+      # Stage 3 - Tests #
+      ###################
+      - name: Unit Tests
+        run: vendor/bin/phpunit

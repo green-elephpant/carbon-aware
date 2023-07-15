@@ -20,8 +20,11 @@ class CarbonIntensity
      * @var string
      */
     public $datetime;
-    public function __construct(int $co2e, Location $location, string $datetime)
-    {
+    public function __construct(
+        int $co2e,
+        Location $location,
+        string $datetime
+    ) {
         $this->co2e = $co2e;
         $this->location = $location;
         $this->datetime = $datetime;

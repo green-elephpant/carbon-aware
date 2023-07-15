@@ -28,8 +28,11 @@ class Co2Signal implements ConnectorInterface
      */
     private $requestFactory;
 
-    public function __construct(string $apiKey, HttpClient $httpClient, RequestFactoryInterface $requestFactory)
-    {
+    public function __construct(
+        string $apiKey,
+        HttpClient $httpClient,
+        RequestFactoryInterface $requestFactory
+    ) {
         $this->apiKey = $apiKey;
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
