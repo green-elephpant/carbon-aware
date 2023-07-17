@@ -40,7 +40,7 @@ jobs:
       # Stage 3 - Tests #
       ###################
       - name: Unit Tests
-        run: php -d pcov.enabled=1 -d pcov.directory=. -d pcov.exclude="~vendor~" vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: php -d pcov.enabled=1 -d pcov.directory=./src -d pcov.exclude="~vendor~" vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Coverage Report as Comment (Clover)
         uses: lucassabreu/comment-coverage-clover@main
