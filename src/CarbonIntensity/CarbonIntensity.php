@@ -12,14 +12,17 @@ class CarbonIntensity
      * @var int
      */
     public $co2e;
+
     /**
      * @var \GreenElephpant\CarbonAware\Location\Location
      */
     public $location;
+
     /**
      * @var string
      */
     public $datetime;
+
     public function __construct(
         int $co2e,
         Location $location,
