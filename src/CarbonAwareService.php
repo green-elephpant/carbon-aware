@@ -12,21 +12,21 @@ use Psr\SimpleCache\CacheInterface;
 
 class CarbonAwareService implements CarbonAwareCurrentInterface, CarbonAwareForecastInterface
 {
-    public const THRESHOLD_LOW = 350;
+    public const THRESHOLD_LOW = 300;
     public const THRESHOLD_HIGH = 600;
 
     /**
-     * @var \GreenElephpant\CarbonAware\Connector\ConnectorInterface
+     * @var ConnectorInterface
      */
     private $connector;
 
     /**
-     * @var \GreenElephpant\CarbonAware\Location\Location
+     * @var Location
      */
     private $defaultLocation;
 
     /**
-     * @var \Psr\SimpleCache\CacheInterface|null
+     * @var CacheInterface|null
      */
     private $cache;
 
