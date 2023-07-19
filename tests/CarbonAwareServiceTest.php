@@ -11,6 +11,9 @@ use GreenElephpant\CarbonAware\Test\Connector\ConnectorMock;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * @covers CarbonAwareService
+ */
 final class CarbonAwareServiceTest extends TestCase
 {
     /**
