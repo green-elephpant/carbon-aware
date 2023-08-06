@@ -1,11 +1,8 @@
-<!-- p align="center">
-	<img src="https://media.carstenwindler.de/green-elephpant/green-elephpant-logo.svg" alt="Green ElePHPant" width="400">
-</p--->
+<p align="center">
+	<img src="./docs/images/green-elephpant-logo.svg" alt="Green ElePHPant" width="400">
+</p>
 
 <h1 align="center">Green ElePHPant - CarbonAware</h1>
-
-
-------
 
 The **Green ElePHPant** wants to help you to reduce the carbon emissions of your software.
 
