@@ -13,6 +13,8 @@ class ConnectorMock implements ConnectorInterface
     private $intensity;
     private $locationCode;
 
+    public const DATETIME_STAMP = '2023-07-15 01:23:45';
+
     public function __construct(int $intensity = 123, string $locationCode = 'de')
     {
         $this->intensity = $intensity;
@@ -24,7 +26,7 @@ class ConnectorMock implements ConnectorInterface
         return new CarbonIntensity(
             $this->intensity,
             new Location($this->locationCode),
-            '2023-07-15 01:23:45'
+            self::DATETIME_STAMP
         );
     }
 
@@ -33,7 +35,7 @@ class ConnectorMock implements ConnectorInterface
         return new CarbonForecast(
             [$this->intensity],
             new Location($this->locationCode),
-            '2023-07-15 01:23:45'
+            self::DATETIME_STAMP
         );
     }
 }
