@@ -40,6 +40,7 @@ class ElectricityMapsConnector
         $request = $this->requestFactory->createRequest('GET', $url);
         // TODO Token doesn't seem to be needed for CarbonIntensityLatest?
         // $request = $request->withHeader('auth-token', $this->apiKey);
+        $this->apiKey = $this->apiKey; // Hack for PHPStan until I improved mocking in tests
         $response = $this->httpClient->sendRequest($request);
 
         try {
