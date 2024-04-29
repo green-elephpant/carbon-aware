@@ -1,0 +1,10 @@
+{
+  "zone": "DE",
+  "carbonIntensity": 428,
+  "datetime": "2024-03-01T23:00:00.000Z",
+  "updatedAt": "2024-03-01T22:48:49.093Z",
+  "createdAt": "2024-02-27T23:49:20.326Z",
+  "emissionFactorType": "lifecycle",
+  "isEstimated": true,
+  "estimationMethod": "TIME_SLICER_AVERAGE"
+}

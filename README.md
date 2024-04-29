@@ -50,10 +50,7 @@ TODO: remove these 2 from carbonaware?
 "php-http/httplug": "^2.3"
 
 ```php
-use Buzz\Client\Curl;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use GreenElephpant\CarbonAware\CarbonAwareService;
-use GreenElephpant\CarbonAware\Connector\Co2Signal;
+use Buzz\Client\Curl;use GreenElephpant\CarbonAware\Connector\Co2Signal;use GreenElephpant\CarbonAware\Service\CarbonAwareService;use Nyholm\Psr7\Factory\Psr17Factory;
 
 // Create HTTP client with HTTP message factory
 // E.g. nyholm/psr7 and kriswallsmith/buzz
