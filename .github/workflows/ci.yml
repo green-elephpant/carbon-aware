@@ -1,18 +1,17 @@
 name: Continuous Integration
 
 on:
-  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
-  pull_request:
-
-permissions:
-  pull-requests: write
 
 jobs:
   pipeline:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      COMPOSER_NO_INTERACTION: 1
 
     steps:
       ###################
@@ -26,9 +25,10 @@ jobs:
         with:
           php-version: '7.4'
           coverage: pcov
+          tools: composer:v2
 
-      - name: Install composer dependencies
-        uses: ramsey/composer-install@v2
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
 
       ###########################
       # Stage 2 - Code Analysis #
@@ -43,9 +43,27 @@ jobs:
       # Stage 3 - Tests #
       ###################
       - name: Unit Tests
-        run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=tests/coverage.xml
 
-      - name: Coverage Report as Comment (Clover)
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Download artifact
+        uses: dawidd6/action-download-artifact@v2.14.1
+        continue-on-error: true
+        with:
+          workflow: .github/workflows/ci.yml
+          branch: main
+          name: coverage-report
+          path: tests/base
+
+      - if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: tests/coverage.xml
+
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Coverage Report as Comment (Clover)
         uses: lucassabreu/comment-coverage-clover@main
         with:
           file: coverage.xml
+          base-file: tests/base/coverage.xml
