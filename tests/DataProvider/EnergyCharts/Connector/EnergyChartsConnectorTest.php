@@ -88,9 +88,9 @@ final class EnergyChartsConnectorTest extends TestCase
 
         $this->assertObjectHasProperty('signal', $response);
         $this->assertEquals([
-            0 => 0,
+            0 => 2,
             1 => 1,
-            2 => 2,
+            2 => 0,
             3 => 1,
         ], $response->signal);
 

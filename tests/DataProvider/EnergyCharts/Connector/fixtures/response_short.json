@@ -12,9 +12,9 @@
     52.7
   ],
   "signal": [
-    0,
-    1,
     2,
+    1,
+    0,
     1
   ],
   "substitute": false

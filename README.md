@@ -40,35 +40,46 @@ Simply use composer to add `GreenElephpant\CarbonAware` to your project:
 
 ## Configuration
 
-`GreenElephpant\CarbonAware` is designed to require as few external dependencies as possible so that it can fit in 
+`GreenElephpant\CarbonAware` was designed to require as few external dependencies as possible so that it can fit in 
 almost every project. It uses several PSR for e.g. HTTP messages (PSR-17) and clients (PSR-18), so it won't work out 
 of the box but require a bit (but not a lot) of hand wiring.
 
-TODO: Laravel package
-TODO: remove these 2 from carbonaware?
-"php-http/message-factory": "^1.0",
-"php-http/httplug": "^2.3"
-
 ```php
-use Buzz\Client\Curl;use GreenElephpant\CarbonAware\Connector\Co2Signal;use GreenElephpant\CarbonAware\Service\CarbonAwareService;use Nyholm\Psr7\Factory\Psr17Factory;
+use Buzz\Client\Curl;
+use GreenElephpant\CarbonAware\DataProvider\EnergyCharts\Connector\EnergyChartsConnector;
+use GreenElephpant\CarbonAware\DataProvider\EnergyCharts\EnergyCharts;
+use GreenElephpant\CarbonAware\Service\CarbonAwareService;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
 // Create HTTP client with HTTP message factory
 // E.g. nyholm/psr7 and kriswallsmith/buzz
 $psr17Factory = new Psr17Factory();
 $psr18Client = new Curl($psr17Factory);
 
-// Create Connector (here: for CO2Signal)
-$co2SignalConnector = new Co2Signal(
-    'your_apikey',
+// Create Connector (here: for energy-charts.info)
+$energyChartsConnector = new EnergyChartsConnector(
     $psr18Client,
-    $psr17Factory
+    $psr17Factory,
 );
 
 // Setup location (the region of the world you want to get the information for)
 $location = new GreenElephpant\CarbonAware\Location\Location('DE');
 
-// Finally create the CarbonAwareService instance, using the connector and the location
-$carbonAwareService = new CarbonAwareService($co2SignalConnector, $location);
+// Finally create the DataProvider instance, using the connector and the location
+$dataProvider = new EnergyCharts(
+    $co2SignalConnector,
+    $location
+);
+
+$carbonAwareService = new CarbonAwareService($connector
 ```
 
+## Internals
+
+`GreenElephpant\CarbonAware` uses 3rd party APIs to receive carbon intensity data. To ensure future-proof and easy 
+maintenance,
+
+* `Connector`: the actual API wrapper. Provides easy access to the relevant API endpoints (note: only those endpoints that are relevant for this project are supported.
+* `DataProvider`: the link between
+* `CarbonAwareService`: provides uniform API
 

@@ -128,13 +128,13 @@ class EnergyCharts implements DataProviderInterface
     {
         // https://api.energy-charts.info/#/ren_share/traffic_signal_signal_get
         if ($signal <= 0) {
-            return Indicator::createHigh($timestamp);
+            return Indicator::createLow($timestamp);
         }
 
         if ($signal === 1) {
             return Indicator::createAverage($timestamp);
         }
 
-        return Indicator::createLow($timestamp);
+        return Indicator::createHigh($timestamp);
     }
 }
