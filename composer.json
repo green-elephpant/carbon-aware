@@ -1,6 +1,8 @@
 {
   "name": "green-elephpant/carbon-aware",
   "description": "SDK to help your applications reduce carbon emissions",
+  "version": "0.0.1",
+  "type": "library",
   "license": "MIT",
   "authors": [
     {
