@@ -47,7 +47,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Download artifact
-        uses: dawidd6/action-download-artifact@v2.14.1
+        uses: dawidd6/action-download-artifact@v3.1.4
         continue-on-error: true
         with:
           workflow: .github/workflows/ci.yml
@@ -56,7 +56,7 @@ jobs:
           path: tests/base
 
       - if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: tests/coverage.xml
