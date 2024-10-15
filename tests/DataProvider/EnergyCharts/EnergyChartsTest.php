@@ -78,9 +78,9 @@ final class EnergyChartsTest extends TestCase
     public function getCurrentDataProvider(): array
     {
         return [
-            [1708729200, -1],
+            [1708729200, 1],
             [1708730100, 0],
-            [1708731000, 1],
+            [1708731000, -1],
             [1708731900, 0],
         ];
     }
@@ -117,7 +117,7 @@ final class EnergyChartsTest extends TestCase
 
         $this->assertEquals(0, $forecast->carbonIndicator[1708730100]->indicator);
         $this->assertEquals(1708730100, $forecast->carbonIndicator[1708730100]->timestamp);
-        $this->assertEquals(1, $forecast->carbonIndicator[1708731000]->indicator);
+        $this->assertEquals(-1, $forecast->carbonIndicator[1708731000]->indicator);
         $this->assertEquals(1708731000, $forecast->carbonIndicator[1708731000]->timestamp);
         $this->assertEquals(0, $forecast->carbonIndicator[1708731900]->indicator);
         $this->assertEquals(1708731900, $forecast->carbonIndicator[1708731900]->timestamp);
