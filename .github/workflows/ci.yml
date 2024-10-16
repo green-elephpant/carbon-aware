@@ -17,6 +17,11 @@ jobs:
       ###################
       # Stage 1 - Build #
       ###################
+      - name: Start Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v3
+        with:
+          task: start-measurement
+
       - name: Checkout latest revision
         uses: actions/checkout@v4
 
@@ -30,6 +35,12 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Checkout Repo Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v3
+        with:
+          task: get-measurement
+          label: 'build'
+
       ###########################
       # Stage 2 - Code Analysis #
       ###########################
@@ -38,6 +49,13 @@ jobs:
 
       - name: Static Code Analysis
         run: vendor/bin/phpstan
+
+      - name: Checkout Repo Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v3
+        with:
+          task: get-measurement
+          label: 'code analysis'
+
 
       ###################
       # Stage 3 - Tests #
@@ -67,3 +85,15 @@ jobs:
         with:
           file: coverage.xml
           base-file: tests/base/coverage.xml
+
+      - name: Checkout Repo Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v3
+        with:
+          task: get-measurement
+          label: 'tests'
+
+      - name: Show Energy Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v3
+
+        with:
+          task: display-results
